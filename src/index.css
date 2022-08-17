@@ -1,0 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;600;700;800&display=swap');
+
+@font-face {
+  font-family: dimitri;
+  src: url('./assets/font/DIMITRI_.TTF');
+}
+
+@font-face {
+  font-family: adiinnaka;
+  src: url('./assets/font/Adlinnaka-BoldDemo.ttf');
+}
