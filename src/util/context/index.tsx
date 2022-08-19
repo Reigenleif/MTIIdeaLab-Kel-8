@@ -1,3 +1,4 @@
+import { AuthContextProvider } from "./authContext";
 import { PopupContextProvider } from "./popupContext";
 
 export default function ContextProviders({
@@ -5,5 +6,9 @@ export default function ContextProviders({
 }: {
   children: JSX.Element;
 }) {
-  return <PopupContextProvider>{children}</PopupContextProvider>;
+  return (
+    <AuthContextProvider>
+      <PopupContextProvider>{children}</PopupContextProvider>
+    </AuthContextProvider>
+  );
 }

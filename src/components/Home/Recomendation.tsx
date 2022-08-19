@@ -22,7 +22,7 @@ export default function Recomendation() {
       mt="2em"
       p="1em"
     >
-      <Text textAlign="start" color="tosca.b">Makanan Hari ini</Text>
+      <Text textAlign="start" color="tosca.b">Makanan Terakhir</Text>
       <Flex alignItems="center" justifyContent="space-evenly" fontSize={{base:'0.6em',sm:'1em'}}>
         <Text fontSize="3em" color="tosca.b" lineHeight="1em">{foodName}</Text>
         <Image w="10em" borderRadius="10px" display="inline-block" src={foodImg} />

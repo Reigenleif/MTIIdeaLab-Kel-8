@@ -1,10 +1,13 @@
 import { Box, Flex, Text } from "@chakra-ui/react";
 import { MdAccountCircle } from "react-icons/md";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { useLoginState } from "../../util/login";
+import AuthContext from "../../util/context/authContext";
 
 export default function HomeProfile() {
     const [calorie, setCalorie] = useState(0)
     const [schedule, setSchedule] = useState("")
+    const {name} = useContext(AuthContext)
 
     useEffect(() => {
         setCalorie(9999)
@@ -23,7 +26,7 @@ export default function HomeProfile() {
     >
       <Box display="flex" justifyContent="flex-start" alignItems="center" fontSize="3rem">
         <MdAccountCircle/>
-        <Text width="80%" m="0 0 0 0.5em" textAlign="start" fontFamily="m" fontSize="0.5em">Alif Amirudin</Text>
+        <Text width="80%" m="0 0 0 0.5em" textAlign="start" fontFamily="m" fontSize="0.5em">{name?.toString()}</Text>
       </Box>
       <Flex justifyContent="space-between" alignItems="center" mt="2.3em">
         <Box w="40%" bg="#5D737E" borderRadius="20px" p="1em">

@@ -21,8 +21,8 @@ const BUTTON_LINKS: NavLinks[] = [
         link: "/jadwal",
     },
     {
-        title: "Rekomendasi",
-        link: "/rekomendasi",
+        title: "Pengaturan",
+        link: "/pengaturan",
     }
 
 ];

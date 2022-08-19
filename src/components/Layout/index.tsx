@@ -1,9 +1,10 @@
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, useMediaQuery } from "@chakra-ui/react";
 import { useContext, useState } from "react";
 import { OpacityAnim, Pops } from "../../util/entrance-animation";
 import PopupContext from "../../util/context/popupContext";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
+import Footer from "./Footer";
 
 export default function Layout({ children }: { children: JSX.Element }) {
   const {
@@ -12,6 +13,7 @@ export default function Layout({ children }: { children: JSX.Element }) {
     content: popupContent,
   } = useContext(PopupContext);
   const [sidebarIsActive, setSidebarIsActive] = useState(false);
+  const [isMobile] = useMediaQuery('(max-width: 640px)')
 
   const sidebarToggler = () => {
     setSidebarIsActive(!sidebarIsActive);
@@ -47,8 +49,9 @@ export default function Layout({ children }: { children: JSX.Element }) {
           />
         </OpacityAnim>
       )}
-      <Sidebar isActive={sidebarIsActive} backHandler={sidebarToggler} />
+      {!isMobile && <Sidebar isActive={sidebarIsActive} backHandler={sidebarToggler} />}
       <Navbar hamburgerHandler={sidebarToggler} />
+      {isMobile && <Footer/>}
       {isPopupActive && (
         <Box position="fixed" top="30%" zIndex="10" width="calc(100% - 6rem)">
           <Box m="auto">

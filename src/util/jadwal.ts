@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
 
-interface jadwal {
-  [key: string]: string[];
+type NumPair = [number,number]
+
+interface Jadwal {
+  [key: string]: [NumPair,NumPair,NumPair];
 }
 
 export const useGetJadwal = () => {
-  const [jadwal, setJadwal] = useState<jadwal>({});
+  const [jadwal, setJadwal] = useState<Jadwal>({});
 
   useEffect(() => {
     const jadwalDataGross = localStorage.getItem("jadwal") || "";
-    let jadwalData: jadwal;
+    let jadwalData: Jadwal;
     try {
       jadwalData = JSON.parse(jadwalDataGross);
     } catch {
@@ -19,13 +21,14 @@ export const useGetJadwal = () => {
     setJadwal(jadwalData);
   }, [setJadwal]);
 
-  const setJadwalHandler = (day: string, time: string) => {
+  const setJadwalHandler = (day: string, time:number, hour: number,min: number) => {
     setJadwal((s) => {
       let tmp = { ...s };
       if (day in tmp) {
-        tmp[day].push(time);
+        tmp[day][time] = [hour,min];
       } else {
-        tmp[day] = [time]
+        tmp[day] = [[0,0],[0,0],[0,0]]
+        tmp[day][time] = [hour,min]
       }
       
       localStorage.setItem("jadwal", JSON.stringify(tmp));
@@ -33,11 +36,11 @@ export const useGetJadwal = () => {
     });
   };
 
-  const delJadwalHandler = (day: string, index: number) => {
+  const delJadwalHandler = (day: string, time: number) => {
     setJadwal((s) => {
         let tmp = { ...s };
         if (day in tmp) {
-          tmp[day] = [...tmp[day].splice(0,index),...tmp[day].splice(index+1,tmp[day].length)] ;
+          tmp[day][time] = [0,0];
         } 
         localStorage.setItem("jadwal", JSON.stringify(tmp));
         return tmp;

@@ -32,11 +32,11 @@ export const StepPops = ({ children }: { children: JSX.Element[] }) => {
   );
 };
 
-export const OpacityAnim = ({ children }: { children: JSX.Element }) => {
+export const OpacityAnim = ({ children,time }: { children: JSX.Element,time?:number }) => {
   return (
     <motion.div
       animate={{ opacity: [0, 1] }}
-      transition={{ duration: 0.2, times: [0, 1] }}
+      transition={{ duration: time || 0.3, times: [0, 1] }}
     >
       {children}
     </motion.div>

@@ -4,28 +4,30 @@ import { MdEdit } from "react-icons/md";
 import PopupContext from "../../util/context/popupContext";
 import { StepPops } from "../../util/entrance-animation";
 import { useGetJadwal } from "../../util/jadwal";
+import BasicInput from "../Common/BasicInput";
 
 interface JadwalPopupProps {
   day: string;
   makanKe: number;
-  handler: (text: string) => void;
+  handler: (hour: number, min: number) => void;
 }
 
 interface JadwalBlankProps {
   day: string;
   makanKe: number;
-  handler: (text: string) => void;
+  handler: (hour: number, min: number) => void;
 }
 
 interface JadwalItemProps {
-  time: string;
+  hour: number;
+  min: number;
   removeHandler: () => void;
 }
 
 interface JadwalRowProps {
-  data: string[];
+  data: [number, number][];
   day: string;
-  handler: (day: string, time: string) => void;
+  handler: (day: string, time: number, hour: number, sec: number) => void;
   removeHandler: (day: string, index: number) => void;
 }
 
@@ -33,14 +35,28 @@ const HARI_HARI = ["Senin", "Selasa", "Rabu", "Kamis", "Jum'at", "Sabtu"];
 
 const JadwalPopup = ({ day, makanKe, handler }: JadwalPopupProps) => {
   const { disablePopup } = useContext(PopupContext);
-  const [input, setInput] = useState("");
+
+  const [hourInput, sethourInput] = useState(0);
+  const [minInput, setminInput] = useState(0);
+
   const inputHandler = () => {
-    handler(input);
+    handler(hourInput, minInput);
     disablePopup();
   };
 
-  const inputChange = (e: any) => {
-    setInput(e.target.value);
+  const hourInputChange = (e: any) => {
+    if (e.target.value > 12) {
+      sethourInput(12);
+      return;
+    }
+    sethourInput(e.target.value);
+  };
+  const minInputChange = (e: any) => {
+    if (e.target.value > 59) {
+      setminInput(59);
+      return;
+    }
+    setminInput(e.target.value);
   };
 
   return (
@@ -50,23 +66,16 @@ const JadwalPopup = ({ day, makanKe, handler }: JadwalPopupProps) => {
       padding="2em"
       margin="auto"
       borderRadius="5px"
+      color="white"
     >
       <Text textAlign="start" color="white" fontSize="1.2em">
         Jadwal makan <br /> ke-{makanKe} hari {day}
       </Text>
-      <Input
-        border="2px solid white"
-        bg="tosca.a"
-        color="white"
-        h="1.4em"
-        pl="1em"
-        mt="1em"
-        borderRadius="none"
-        value={input}
-        onChange={inputChange}
-      />
+      <BasicInput value={hourInput} onChange={hourInputChange} w="40%"/>
+      {" : "}
+      <BasicInput value={minInput} onChange={minInputChange} w="40%"/>
       <Flex justifyContent="flex-end" mt="1em">
-        <BtnDefault fontSize="1em" onClick={inputHandler}>
+        <BtnDefault fontSize="1em" onClick={inputHandler} color="black">
           OK
         </BtnDefault>
       </Flex>
@@ -77,10 +86,10 @@ const JadwalPopup = ({ day, makanKe, handler }: JadwalPopupProps) => {
 const BtnDefault = (props: any) => {
   return (
     <Button
-      fontSize="2em"
-      minW="4em"
-      maxW="4em"
-      h="1.2em"
+      fontSize="1.6em"
+      minW="5em"
+      maxW="5em"
+      h="1.4em"
       borderRadius="3px"
       display="flex"
       alignItems="center"
@@ -107,34 +116,51 @@ const JadwalBlank = (props: JadwalBlankProps) => {
   );
 };
 
-const JadwalItem = ({ time, removeHandler }: JadwalItemProps) => {
+const JadwalItem = ({ hour, min, removeHandler }: JadwalItemProps) => {
   return (
     <BtnDefault bg="tosca.d" color="white" onClick={removeHandler}>
-      {time}
+      {`${hour > 10 ? hour : "0" + hour.toString()} : ${min > 10 ? min : "0" + min.toString()}`}
     </BtnDefault>
   );
 };
 
 const JadwalRow = ({ data, day, handler, removeHandler }: JadwalRowProps) => {
-  const newDataHandler = (text: string) => {
-    handler(day, text);
+  const changeDataHandler = (time: number) => (hour: number, min: number) => {
+    handler(day, time, hour, min);
   };
 
-  const removeHandlerGenerator = (index: number) => () => {
-    removeHandler(day, index)
-  }
-
-  const items = data.map((e,i) => <JadwalItem time={e} key={e} removeHandler={removeHandlerGenerator(i)}/>);
-  if (items.length < 3) {
+  const removeHandlerGenerator = (time: number) => () => {
+    removeHandler(day, time);
+  };
+  console.log(data);
+  const items = data.map((e, i) =>
+    !e[0] || !e[1] ? (
+      <JadwalBlank
+        key={i}
+        day={day}
+        makanKe={i + 1}
+        handler={changeDataHandler(i)}
+      />
+    ) : (
+      <JadwalItem
+        hour={e[0]}
+        min={e[1]}
+        key={i}
+        removeHandler={removeHandlerGenerator(i)}
+      />
+    )
+  );
+  while (items.length < 3) {
     items.push(
       <JadwalBlank
-        key={"b"}
+        key={items.length}
         day={day}
         makanKe={items.length + 1}
-        handler={newDataHandler}
+        handler={changeDataHandler(items.length)}
       />
     );
   }
+
   return (
     <>
       <Text
@@ -160,12 +186,28 @@ const JadwalRow = ({ data, day, handler, removeHandler }: JadwalRowProps) => {
 };
 
 export default function JadwalList() {
-  const { jadwal, setJadwalHandler,delJadwalHandler } = useGetJadwal();
+  const { jadwal, setJadwalHandler, delJadwalHandler } = useGetJadwal();
   const rows = HARI_HARI.map((e) => {
     return e in jadwal ? (
-      <JadwalRow key={e} data={jadwal[e]} day={e} handler={setJadwalHandler} removeHandler={delJadwalHandler}/>
+      <JadwalRow
+        key={e}
+        data={jadwal[e]}
+        day={e}
+        handler={setJadwalHandler}
+        removeHandler={delJadwalHandler}
+      />
     ) : (
-      <JadwalRow key={e} data={[]} day={e} handler={setJadwalHandler} removeHandler={delJadwalHandler}/>
+      <JadwalRow
+        key={e}
+        data={[
+          [0, 0],
+          [0, 0],
+          [0, 0],
+        ]}
+        day={e}
+        handler={setJadwalHandler}
+        removeHandler={delJadwalHandler}
+      />
     );
   });
   return <StepPops>{rows}</StepPops>;
