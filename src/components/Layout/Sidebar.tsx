@@ -66,6 +66,7 @@ export default function Sidebar({
   const navigate = useNavigate();
   const generateRandomFood = () => {
     navigate(getRandomFoodLink());
+    backHandler()
   };
   const currentAt = location.pathname == "/" ? "/home" : location.pathname;
 

@@ -1,4 +1,11 @@
-import { Box, Image, Text, Flex, Button } from "@chakra-ui/react";
+import {
+  Box,
+  Image,
+  Text,
+  Flex,
+  Button,
+  useMediaQuery,
+} from "@chakra-ui/react";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { getFoodById, getRandomFood } from "../../storage/foods";
@@ -27,7 +34,8 @@ const NoFood = () => {
 
 export default function LastEaten() {
   const { ate } = useContext(AuthContext);
-  const navigate = useNavigate()
+  const [isMobile] = useMediaQuery("(max-width: 640px)");
+  const navigate = useNavigate();
   if (ate.length == 0) {
     return <NoFood />;
   }
@@ -38,8 +46,8 @@ export default function LastEaten() {
   }
 
   const navigateFood = () => {
-    navigate(`/food/${food.id}`)
-  }
+    navigate(`/food/${food.id}`);
+  };
 
   const foodName = food.name;
   const foodImg = food.image;
@@ -64,16 +72,31 @@ export default function LastEaten() {
         fontSize={{ base: "0.6em", sm: "1em" }}
       >
         <Box w="50%">
-          <Text fontSize="1.5em" color="tosca.b" lineHeight="1em">
+          <Text fontSize="1.5em" color="tosca.b" lineHeight="1em" mt="1em">
             {foodName}
           </Text>
           <Flex mt="1em">
-            <Box m="auto" color="tosca.b">
-              <Text fontSize="1.1em">{foodCal}</Text>
-              <Text fontSize="0.9em" m="auto">kkal</Text>
-            </Box>
-            <Box h="3em" w="0.5px" bg="tosca.b"></Box>
-            <Button color="tosca.a" w="8em" m="0.5em" borderRadius="10px" onClick={navigateFood}>Order Now !</Button>
+            {!isMobile && (
+              <>
+                <Box m="auto" color="tosca.b">
+                  <Text fontSize="1.1em">{foodCal}</Text>
+                  <Text fontSize="0.9em" m="auto">
+                    kkal
+                  </Text>
+                </Box>
+                <Box h="3em" w="0.5px" bg="tosca.b"></Box>
+              </>
+            )}
+
+            <Button
+              color="tosca.a"
+              w="8em"
+              m="0.5em"
+              borderRadius="10px"
+              onClick={navigateFood}
+            >
+              Order More !
+            </Button>
           </Flex>
         </Box>
         <Image

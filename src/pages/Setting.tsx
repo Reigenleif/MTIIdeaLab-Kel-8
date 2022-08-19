@@ -66,7 +66,7 @@ export default function Setting() {
         color="white"
       >
         <Text textAlign="start" color="white" fontSize="1.2em">
-          Kalori berhasil direset !
+          Makanan dan kalori berhasil direset !
         </Text>
         <Button fontSize="1em" onClick={disablePopup} color="black" mt="1em">
           OK
