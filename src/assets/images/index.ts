@@ -8,6 +8,7 @@ import gadoGado from "./gado-gado.jpg";
 import pempek from "./pempek.jpg";
 import rawon from "./rawon.jpg";
 import sotoAyam from "./soto-ayam.jpg";
+import leafletMarker from "./leaflet-marker.png"
 
 const img = {
   sateAyam,
@@ -20,6 +21,7 @@ const img = {
   pempek,
   rawon,
   sotoAyam,
+  leafletMarker
 };
 
 export default img;
