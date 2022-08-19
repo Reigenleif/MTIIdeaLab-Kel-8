@@ -14,7 +14,7 @@ export default function Footer() {
     <Box
       bg="tosca.b"
       h="1.5em"
-      w="calc(100vw)"
+      w="100%"
       pos="fixed"
       bottom="0px"
       left="0px"

@@ -32,7 +32,7 @@ export default function Layout({ children }: { children: JSX.Element| JSX.Elemen
   }
 
   return (
-    <Box>
+    <Box w="calc(100vw - 4rem)" overflow="hidden">
       {(sidebarIsActive || isPopupActive) && (
         <OpacityAnim>
           <Box

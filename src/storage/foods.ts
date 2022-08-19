@@ -76,7 +76,7 @@ export const DUMMY_FOOD: food[] = [
   },
   {
     id: 8,
-    name: "rawon",
+    name: "Rawon",
     image: img.rawon,
     price: "21.000",
     cal: 680,
@@ -84,7 +84,7 @@ export const DUMMY_FOOD: food[] = [
   },
   {
     id: 9,
-    name: "pempek",
+    name: "Pempek",
     image: img.pempek,
     price: "25.000",
     cal: 240,
@@ -94,7 +94,6 @@ export const DUMMY_FOOD: food[] = [
 
 // methods
 export const getRandomFood: () => food = () => {
-  console.log(Math.floor(Math.random() * DUMMY_FOOD.length));
   return DUMMY_FOOD[Math.floor(Math.random() * DUMMY_FOOD.length)];
 };
 
