@@ -10,7 +10,7 @@ export const colors = {
 }
 
 export const fonts = {
-    title: 'dimitri',
+    title: 'Mayor',
     main: "'intel', 'sans-serif'",
     m: "adiinnaka"
 }

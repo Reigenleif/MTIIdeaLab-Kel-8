@@ -1,24 +1,30 @@
 import { Box, Button, Flex, Input, Text } from "@chakra-ui/react";
 import { useContext, useState } from "react";
+import { useNavigate } from "react-router";
 import BasicInput from "../components/Common/BasicInput";
 import AuthContext from "../util/context/authContext";
 import PopupContext from "../util/context/popupContext";
 import { OpacityAnim } from "../util/entrance-animation";
 
 export default function Setting() {
+  const navigate = useNavigate();
   const { setName, resetAte } = useContext(AuthContext);
   const { triggerPopup, disablePopup } = useContext(PopupContext);
 
   const GantiNamaPopup = () => {
     const [nameInput, setNameInput] = useState("");
-    const submitHandler = () => {
-      setName(nameInput);
+    const submitHandler = (e: any) => {
+      e.preventDefault();
+      if (nameInput != "") {
+        setName(nameInput);
+        navigate("/");
+      }
       disablePopup();
     };
 
     const changeHandler = (e: any) => {
-        setNameInput(e.target.value)
-    }
+      setNameInput(e.target.value);
+    };
 
     return (
       <Box
@@ -32,16 +38,19 @@ export default function Setting() {
         <Text textAlign="start" color="white" fontSize="1.2em">
           Masukkan nama barumu :
         </Text>
-        <BasicInput
-          value={nameInput}
-          w="70%"
-          onChange={changeHandler}
-        />
-        <Flex justifyContent="center" mt="1em" w="100%">
-          <Button fontSize="1em" onClick={submitHandler} color="black">
-            OK
-          </Button>
-        </Flex>
+        <form onSubmit={submitHandler}>
+          <BasicInput
+            value={nameInput}
+            w="70%"
+            onChange={changeHandler}
+            type="text"
+          />
+          <Flex justifyContent="center" mt="1em" w="100%">
+            <Button fontSize="1em" type="submit" color="black">
+              OK
+            </Button>
+          </Flex>
+        </form>
       </Box>
     );
   };
@@ -59,13 +68,7 @@ export default function Setting() {
         <Text textAlign="start" color="white" fontSize="1.2em">
           Kalori berhasil direset !
         </Text>
-        <Button
-          fontSize="1em"
-          onClick={() => {
-            disablePopup;
-          }}
-          color="black"
-        >
+        <Button fontSize="1em" onClick={disablePopup} color="black" mt="1em">
           OK
         </Button>
       </Box>
@@ -82,20 +85,17 @@ export default function Setting() {
   };
 
   const logoutHandler = () => {
-    setName('')
-
-  }
+    setName("");
+  };
 
   return (
     <OpacityAnim time={1}>
-      <Flex
+      <Box
         bg="tosca.a"
-        h="100vh"
+        mt="3em"
         w="100%"
-        justifyContent="center"
-        alignItems="center"
       >
-        <Box maxW="min(30em,80%)" color="white">
+        <Box maxW="min(30em,80%)" color="white" m="auto">
           <Text mt="1em" fontSize="2em" color="white">
             Pengaturan
           </Text>
@@ -119,7 +119,7 @@ export default function Setting() {
             m="2em"
             onClick={resetAteHandler}
           >
-            Reset Kalori
+            Reset Makanan
           </Button>
           <Button
             p="0.5em"
@@ -133,7 +133,7 @@ export default function Setting() {
             Logout
           </Button>
         </Box>
-      </Flex>
+      </Box>
     </OpacityAnim>
   );
 }

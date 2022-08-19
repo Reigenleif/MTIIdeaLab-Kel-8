@@ -6,7 +6,7 @@ import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 import Footer from "./Footer";
 
-export default function Layout({ children }: { children: JSX.Element }) {
+export default function Layout({ children }: { children: JSX.Element| JSX.Element[] }) {
   const {
     disablePopup,
     isActive: isPopupActive,
@@ -14,6 +14,7 @@ export default function Layout({ children }: { children: JSX.Element }) {
   } = useContext(PopupContext);
   const [sidebarIsActive, setSidebarIsActive] = useState(false);
   const [isMobile] = useMediaQuery('(max-width: 640px)')
+  const [isHeightSmall] = useMediaQuery('(max-height: 640px)')
 
   const sidebarToggler = () => {
     setSidebarIsActive(!sidebarIsActive);
@@ -51,7 +52,7 @@ export default function Layout({ children }: { children: JSX.Element }) {
       )}
       {!isMobile && <Sidebar isActive={sidebarIsActive} backHandler={sidebarToggler} />}
       <Navbar hamburgerHandler={sidebarToggler} />
-      {isMobile && <Footer/>}
+      {isMobile && !isHeightSmall && <Footer/>}
       {isPopupActive && (
         <Box position="fixed" top="30%" zIndex="10" width="calc(100% - 6rem)">
           <Box m="auto">
@@ -59,7 +60,9 @@ export default function Layout({ children }: { children: JSX.Element }) {
           </Box>
         </Box>
       )}
+      
       {children}
+      {isMobile && <Box h="8em" w="100vw" visibility="hidden"/>}
     </Box>
   );
 }

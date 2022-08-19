@@ -1,7 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import Explore from "../components/Home/Explore";
 import HomeProfile from "../components/Home/HomeProfile";
-import Recomendation from "../components/Home/Recomendation";
+import LastEaten from "../components/Home/LastEaten";
 import { Pops, StepPops } from "../util/entrance-animation";
 
 export default function Home() {
@@ -9,7 +9,7 @@ export default function Home() {
     <Box>
       <StepPops>
         <HomeProfile />
-        <Recomendation />
+        <LastEaten />
         <Explore />
       </StepPops>
     </Box>

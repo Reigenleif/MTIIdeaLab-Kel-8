@@ -28,7 +28,7 @@ export default function Navbar({
       display="flex"
       alignItems="center"
       justifyContent="space-between"
-      bg={isreverseColor ? "tosca.a" : ""}
+    
     >
       {!isMobile && <Box
         width="3.2em"
@@ -36,7 +36,7 @@ export default function Navbar({
         onClick={hamburgerHandler}
         cursor="pointer"
       >
-        <MdReorder color={colors.tosca.a} width="90%" />
+        <MdReorder color={isreverseColor ? "white" : colors.tosca.a}  width="90%" />
       </Box>}
       <Link to="/">
         <Text

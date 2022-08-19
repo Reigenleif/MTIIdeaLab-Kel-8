@@ -39,7 +39,8 @@ const JadwalPopup = ({ day, makanKe, handler }: JadwalPopupProps) => {
   const [hourInput, sethourInput] = useState(0);
   const [minInput, setminInput] = useState(0);
 
-  const inputHandler = () => {
+  const submitHandler = (e: any) => {
+    e.preventDefault();
     handler(hourInput, minInput);
     disablePopup();
   };
@@ -49,14 +50,14 @@ const JadwalPopup = ({ day, makanKe, handler }: JadwalPopupProps) => {
       sethourInput(12);
       return;
     }
-    sethourInput(e.target.value);
+    sethourInput(parseInt(e.target.value));
   };
   const minInputChange = (e: any) => {
     if (e.target.value > 59) {
       setminInput(59);
       return;
     }
-    setminInput(e.target.value);
+    setminInput(parseInt(e.target.value));
   };
 
   return (
@@ -71,14 +72,16 @@ const JadwalPopup = ({ day, makanKe, handler }: JadwalPopupProps) => {
       <Text textAlign="start" color="white" fontSize="1.2em">
         Jadwal makan <br /> ke-{makanKe} hari {day}
       </Text>
-      <BasicInput value={hourInput} onChange={hourInputChange} w="40%"/>
-      {" : "}
-      <BasicInput value={minInput} onChange={minInputChange} w="40%"/>
-      <Flex justifyContent="flex-end" mt="1em">
-        <BtnDefault fontSize="1em" onClick={inputHandler} color="black">
-          OK
-        </BtnDefault>
-      </Flex>
+      <form onSubmit={submitHandler}>
+        <BasicInput value={hourInput} onChange={hourInputChange} w="40%" />
+        {" : "}
+        <BasicInput value={minInput} onChange={minInputChange} w="40%" />
+        <Flex justifyContent="flex-end" mt="1em">
+          <BtnDefault fontSize="1em" type="submit" color="black">
+            OK
+          </BtnDefault>
+        </Flex>
+      </form>
     </Box>
   );
 };
@@ -119,7 +122,9 @@ const JadwalBlank = (props: JadwalBlankProps) => {
 const JadwalItem = ({ hour, min, removeHandler }: JadwalItemProps) => {
   return (
     <BtnDefault bg="tosca.d" color="white" onClick={removeHandler}>
-      {`${hour > 10 ? hour : "0" + hour.toString()} : ${min > 10 ? min : "0" + min.toString()}`}
+      {`${hour > 10 ? hour : "0" + hour.toString()} : ${
+        min > 10 ? min : "0" + min.toString()
+      }`}
     </BtnDefault>
   );
 };

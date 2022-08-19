@@ -3,15 +3,23 @@ import { MdAccountCircle } from "react-icons/md";
 import { useContext, useEffect, useState } from "react";
 import { useLoginState } from "../../util/login";
 import AuthContext from "../../util/context/authContext";
+import { getFoodById } from "../../storage/foods";
 
 export default function HomeProfile() {
-    const [calorie, setCalorie] = useState(0)
     const [schedule, setSchedule] = useState("")
-    const {name} = useContext(AuthContext)
+    const {name,ate} = useContext(AuthContext)
 
     useEffect(() => {
-        setCalorie(9999)
         setSchedule("13:00 \n Sistem Basis Data")
+    })
+
+    let calorie = 0
+    ate.forEach(e => {
+      const food = getFoodById(e)
+      if (!food) {
+        return
+      }
+      calorie += food.cal
     })
 
   return (

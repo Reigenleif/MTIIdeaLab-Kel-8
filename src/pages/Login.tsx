@@ -16,7 +16,6 @@ export default function Login() {
 
   const submitHandler = (e: any) => {
     e.preventDefault()
-
     setName(nama)
     navigate('/')
   }

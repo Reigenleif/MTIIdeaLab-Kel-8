@@ -33,18 +33,18 @@ const ExploreItem = ({ link, title, icon: Icon }: ExploreItemProps) => {
 
 const EXPLORES: ExploreItemProps[] = [
   {
-    link: "/playlist",
-    title: "playlist",
+    link: "/foodlist",
+    title: "Foodlist",
     icon: MdContactless,
   },
   {
     link: "/kantin",
-    title: "kantin",
+    title: "Kantin",
     icon: MdStore,
   },
   {
     link: "/jadwal",
-    title: "jadwal",
+    title: "Jadwal",
     icon: MdDateRange,
   },
 ];

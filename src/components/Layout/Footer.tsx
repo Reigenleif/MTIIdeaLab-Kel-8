@@ -1,10 +1,14 @@
 import { Box, Text } from "@chakra-ui/react";
 import { MdHome, MdSettings } from "react-icons/md";
 import { useNavigate } from "react-router";
+import { getRandomFoodLink } from "../../storage/foods";
 import { colors } from "../../theme";
 
 export default function Footer() {
   const navigate = useNavigate();
+    const generateRandomFood = () => {
+        navigate(getRandomFoodLink())
+    }
 
   return (
     <Box
@@ -52,6 +56,7 @@ export default function Footer() {
               pos="relative"
               left="calc(50% - 1em)"
               top="0.4em"
+              onClick={generateRandomFood}
             ></Box>
           </Box>
         </Box>
